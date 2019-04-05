@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Text, View, FlatList, AsyncStorage} from "react-native";
 
-import {Icon} from "react-native-elements";
+import {Icon, ListItem} from "react-native-elements";
 
 import Api from "./Api";
 
@@ -20,13 +20,14 @@ export default class Home extends Component {
         <Icon
           name="add"
           containerStyle={{paddingHorizontal: 15}}
-          onPress={() => navigation.navigate("Search")}
+          onPress={() => navigation.navigate("Search", {callbackFn: navigation.getParam("callbackFn")})}
         />
       ),
     }
   };
 
   componentDidMount() {
+    this.props.navigation.setParams({callbackFn: this.getSeriesSavedFn});
     this.getSeriesSavedFn();
     Api.login()
       .then(response => Api.token = response.token)
@@ -51,8 +52,14 @@ export default class Home extends Component {
     );
   }
 
-  _renderItem = () => {
-    return <View/>;
+  _renderItem = ({item}) => {
+    return (
+      <ListItem
+        title={item.seriesName}
+        rightIcon={{name: "chevron-right", size: 30}}
+        leftAvatar={{rounded: false, size: "large", source: {uri: Api.getSeriesImage(item.id)}}}
+      />
+    );
   };
 
   render() {
