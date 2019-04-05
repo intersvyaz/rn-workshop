@@ -23,7 +23,7 @@ export default class Search extends Component {
     return (
       <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
         <Text style={{paddingTop: 30, fontSize: 20}}>
-          {"Welcome to React Native!"}
+          {"Пока ничего не найдено"}
         </Text>
       </View>
     );
