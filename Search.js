@@ -31,6 +31,7 @@ export default class Search extends Component {
 
   componentWillUnmount() {
     AsyncStorage.setItem("seriesSaved", JSON.stringify(this.state.seriesSaved));
+    this.props.navigation.state.params.callbackFn();
   }
 
   _handleSubmitEditing = () => {
