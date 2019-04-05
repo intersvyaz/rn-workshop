@@ -50,6 +50,10 @@ export default class Search extends Component {
     this.setState({seriesSaved: seriesSaved});
   };
 
+  _renderSeparator() {
+    return <View style={[{borderBottomWidth: 1, borderBottomColor: "gray"}]}/>;
+  }
+
   _renderHeader = () => {
     return (
       <TextInput
@@ -93,6 +97,7 @@ export default class Search extends Component {
         renderItem={this._renderItem}
         ListHeaderComponent={this._renderHeader}
         ListEmptyComponent={this._renderFooter}
+        ItemSeparatorComponent={this._renderSeparator}
         keyExtractor={item => item.id.toString()}
       />
     );

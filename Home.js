@@ -50,6 +50,10 @@ export default class Home extends Component {
     });
   };
 
+  _renderSeparator() {
+    return <View style={[{borderBottomWidth: 1, borderBottomColor: "gray"}]}/>;
+  }
+
   _renderFooter() {
     return (
       <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
@@ -78,6 +82,7 @@ export default class Home extends Component {
         extraData={this.state}
         renderItem={this._renderItem}
         ListEmptyComponent={this._renderFooter}
+        ItemSeparatorComponent={this._renderSeparator}
         keyExtractor={item => item.id.toString()}
       />
     );
