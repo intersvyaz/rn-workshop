@@ -18,7 +18,7 @@ export default class Details extends Component {
 
   static navigationOptions = ({navigation}) => {
     return {
-      title: "Эпизоды",
+      title: navigation.getParam("title"),
       headerRight: (
         <Icon
           name="close"

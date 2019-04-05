@@ -42,9 +42,10 @@ export default class Home extends Component {
     });
   };
 
-  _handlePress = id => {
+  _handlePress = (name, id) => {
     this.props.navigation.navigate("Details", {
       id: id,
+      title: name,
       callbackFn: this.getSeriesSavedFn,
     });
   };
@@ -65,7 +66,7 @@ export default class Home extends Component {
         title={item.seriesName}
         rightIcon={{name: "chevron-right", size: 30}}
         leftAvatar={{rounded: false, size: "large", source: {uri: Api.getSeriesImage(item.id)}}}
-        onPress={() => this._handlePress(item.id)}
+        onPress={() => this._handlePress(item.seriesName, item.id)}
       />
     );
   };
