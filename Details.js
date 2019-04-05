@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Text, View, FlatList} from "react-native";
+import {Text, View, FlatList, AsyncStorage} from "react-native";
 
 import Api from "./Api";
 
@@ -10,8 +10,10 @@ export default class Details extends Component {
     super(props);
     this.state = {
       episodes: [],
+      episodesWatched: {},
     };
     this.seriesId = props.navigation.state.params.id;
+    this.seriesSaved = {};
   }
 
   static navigationOptions = () => {
@@ -21,10 +23,26 @@ export default class Details extends Component {
   };
 
   componentDidMount() {
+    AsyncStorage.getItem("seriesSaved").then(series => {
+      this.seriesSaved = JSON.parse(series);
+      this.setState({episodesWatched: this.seriesSaved[this.seriesId].episodes});
+    });
     Api.getSeriesDetails(this.seriesId)
       .then(response => this.setState({episodes: response.data}))
       .catch(error => console.log("getSeriesDetails error", error));
   }
+
+  componentWillUnmount() {
+    if (this.seriesSaved[this.seriesId]) {
+      this.seriesSaved[this.seriesId].episodes = this.state.episodesWatched;
+    }
+    AsyncStorage.setItem("seriesSaved", JSON.stringify(this.seriesSaved));
+  }
+
+  _handleCheckboxPress = item => {
+    this.seriesSaved[this.seriesId].episodes[item.id] = !this.seriesSaved[this.seriesId].episodes[item.id] || undefined;
+    this.setState({episodesWatched: this.seriesSaved[this.seriesId].episodes})
+  };
 
   _renderFooter() {
     return (
@@ -42,6 +60,8 @@ export default class Details extends Component {
         title={"Cерия " + item.airedEpisodeNumber + ' "' + item.episodeName + '"'}
         leftAvatar={{rounded: false, size: "large", source: {uri: Api.getEpisodeImage(item.filename)}}}
         checkBox={{
+          onPress: () => this._handleCheckboxPress(item),
+          checked: !!this.state.episodesWatched[item.id],
           checkedColor: "black",
         }}
       />
