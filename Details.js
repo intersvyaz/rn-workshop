@@ -58,6 +58,10 @@ export default class Details extends Component {
     this.setState({episodesWatched: this.seriesSaved[this.seriesId].episodes})
   };
 
+  _renderSeparator() {
+    return <View style={[{borderBottomWidth: 1, borderBottomColor: "gray"}]}/>;
+  }
+
   _renderFooter() {
     return (
       <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
@@ -89,6 +93,7 @@ export default class Details extends Component {
         extraData={this.state}
         renderItem={this._renderItem}
         ListEmptyComponent={this._renderFooter}
+        ItemSeparatorComponent={this._renderSeparator}
         keyExtractor={item => item.id.toString()}
       />
     );
