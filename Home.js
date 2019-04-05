@@ -42,6 +42,13 @@ export default class Home extends Component {
     });
   };
 
+  _handlePress = id => {
+    this.props.navigation.navigate("Details", {
+      id: id,
+      callbackFn: this.getSeriesSavedFn,
+    });
+  };
+
   _renderFooter() {
     return (
       <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
@@ -58,6 +65,7 @@ export default class Home extends Component {
         title={item.seriesName}
         rightIcon={{name: "chevron-right", size: 30}}
         leftAvatar={{rounded: false, size: "large", source: {uri: Api.getSeriesImage(item.id)}}}
+        onPress={() => this._handlePress(item.id)}
       />
     );
   };
