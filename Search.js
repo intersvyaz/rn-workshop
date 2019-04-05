@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Text, View, FlatList, TextInput} from "react-native";
+import {Text, View, FlatList, TextInput, AsyncStorage} from "react-native";
 
 import Api from "./Api";
 
@@ -22,7 +22,15 @@ export default class Search extends Component {
   };
 
   componentDidMount() {
-    console.log("Search");
+    AsyncStorage.getItem("seriesSaved").then(series => {
+      let seriesSaved = JSON.parse(series);
+      if (seriesSaved === null) return;
+      this.setState({seriesSaved: seriesSaved});
+    });
+  }
+
+  componentWillUnmount() {
+    AsyncStorage.setItem("seriesSaved", JSON.stringify(this.state.seriesSaved));
   }
 
   _handleSubmitEditing = () => {
