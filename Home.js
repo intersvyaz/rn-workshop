@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Text, View, FlatList} from "react-native";
+import {Text, View, FlatList, AsyncStorage} from "react-native";
 
 import {Icon} from "react-native-elements";
 
@@ -27,10 +27,19 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
+    this.getSeriesSavedFn();
     Api.login()
       .then(response => Api.token = response.token)
       .catch(error => console.log("login error", error));
   }
+
+  getSeriesSavedFn = () => {
+    AsyncStorage.getItem("seriesSaved").then(series => {
+      let seriesSaved = JSON.parse(series);
+      if (seriesSaved === null) return;
+      this.setState({series: Object.values(seriesSaved)})
+    });
+  };
 
   _renderFooter() {
     return (
