@@ -21,15 +21,15 @@ class api {
   getEpisodeImage = name => API_GRAPHICS_URL + name;
 
   _exec = (method, path, body) => {
-    const headers = {
-      "Content-type": "application/json",
+    let headers = {
+      "Content-Type": "application/json",
       "Accept": "application/json",
-      "Accept-Language": "en",
+      "Accept-Language": "ru-ru,ru;q=0.8,en-us;q=0.6,en;q=0.4",
     };
     if (this.token) {
       headers["Authorization"] = "Bearer " + this.token;
     }
-    const options = {
+    let options = {
       method: method,
       headers: headers,
     };
