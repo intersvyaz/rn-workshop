@@ -24,7 +24,8 @@ class api {
     let headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "Accept-Language": "ru-ru,ru;q=0.8,en-us;q=0.6,en;q=0.4",
+      // API: At the moment, you may only pass one language abbreviation in the header at a time
+      "Accept-Language": "en",
     };
     if (this.token) {
       headers["Authorization"] = "Bearer " + this.token;
