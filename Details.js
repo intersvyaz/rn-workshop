@@ -3,7 +3,7 @@ import {Text, View, FlatList, AsyncStorage} from "react-native";
 
 import Api from "./Api";
 
-import {ListItem} from "react-native-elements";
+import {ListItem, Icon} from "react-native-elements";
 
 export default class Details extends Component {
   constructor(props) {
@@ -16,13 +16,21 @@ export default class Details extends Component {
     this.seriesSaved = {};
   }
 
-  static navigationOptions = () => {
+  static navigationOptions = ({navigation}) => {
     return {
       title: "Эпизоды",
+      headerRight: (
+        <Icon
+          name="close"
+          containerStyle={{paddingHorizontal: 15}}
+          onPress={navigation.getParam("deleteSeriesFn")}
+        />
+      ),
     }
   };
 
   componentDidMount() {
+    this.props.navigation.setParams({deleteSeriesFn: this.deleteSeriesFn});
     AsyncStorage.getItem("seriesSaved").then(series => {
       this.seriesSaved = JSON.parse(series);
       this.setState({episodesWatched: this.seriesSaved[this.seriesId].episodes});
@@ -37,7 +45,13 @@ export default class Details extends Component {
       this.seriesSaved[this.seriesId].episodes = this.state.episodesWatched;
     }
     AsyncStorage.setItem("seriesSaved", JSON.stringify(this.seriesSaved));
+    this.props.navigation.state.params.callbackFn();
   }
+
+  deleteSeriesFn = () => {
+    this.seriesSaved[this.seriesId] = undefined;
+    this.props.navigation.pop();
+  };
 
   _handleCheckboxPress = item => {
     this.seriesSaved[this.seriesId].episodes[item.id] = !this.seriesSaved[this.seriesId].episodes[item.id] || undefined;
