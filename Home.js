@@ -1,6 +1,10 @@
 import React, {Component} from "react";
 import {Text, View, FlatList} from "react-native";
 
+import {Icon} from "react-native-elements";
+
+import Api from "./Api";
+
 export default class Home extends Component {
   constructor(props) {
     super(props);
@@ -9,21 +13,30 @@ export default class Home extends Component {
     };
   }
 
-  static navigationOptions = () => {
+  static navigationOptions = ({navigation}) => {
     return {
       title: "Мои сериалы",
+      headerRight: (
+        <Icon
+          name="add"
+          containerStyle={{paddingHorizontal: 15}}
+          onPress={() => navigation.navigate("Search")}
+        />
+      ),
     }
   };
 
   componentDidMount() {
-    console.log("Home");
+    Api.login()
+      .then(response => Api.token = response.token)
+      .catch(error => console.log("login error", error));
   }
 
   _renderFooter() {
     return (
       <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
         <Text style={{paddingTop: 30, fontSize: 20}}>
-          {"Welcome to React Native!"}
+          {"Пока ничего не добавлено"}
         </Text>
       </View>
     );
